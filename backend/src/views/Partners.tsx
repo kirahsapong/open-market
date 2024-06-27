@@ -1,6 +1,8 @@
+
 const Partners = () => {
+
   return (
-    <></>
+    <>Partners</>
   )
 }
 

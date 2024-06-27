@@ -1,0 +1,89 @@
+{
+  "protocol": "https://github.com/kirahsapong/open-market/raw/main/backend/src/web5/store.json",
+  "published": true,
+  "types": {
+    "store": {
+      "schema": "https://schema.org/WebSite",
+      "dataFormats": ["application/json"]
+    },
+    "offer": {
+      "schema": "https://schema.org/Offer",
+      "dataFormats": ["application/json"]
+    },
+    "aggregateOffer": {
+      "schema": "https://schema.org/AggregateOffer",
+      "dataFormats": ["application/json"]
+    },
+    "order": {
+      "schema": "https://schema.org/Order",
+      "dataFormats": ["application/json"]
+    },
+    "partner": {
+      "schema": "https://schema.org/Organization",
+      "dataFormats": ["application/json"]
+    },
+    "image": {
+      "dataFormats": ["image/jpeg", "image/png"]
+    }
+  },
+  "structure": {
+    "store": {
+      "$actions": [
+        {
+          "who": "anyone",
+          "can": ["read"]
+        }
+      ],
+      "aggregateOffer": {
+        "$actions": [
+          {
+            "who": "anyone",
+            "can": ["read"]
+          }
+        ]
+      },
+      "partner": {
+        "$actions": [
+          {
+            "who": "anyone",
+            "can": ["read"]
+          }
+        ]
+      }
+    },
+    "offer": {
+      "$actions": [
+        {
+          "who": "anyone",
+          "can": ["read"]
+        }
+      ],
+      "image": {
+        "$actions": [
+          {
+            "who": "anyone",
+            "can": ["read"]
+          }
+        ]
+      }
+    },
+    "order": {
+      "$actions": [
+        {
+          "who": "anyone",
+          "can": ["create"]
+        },
+        {
+          "who": "author",
+          "of": "order",
+          "can": ["read"]
+        },
+        {
+          "who": "recipient",
+          "of": "order",
+          "can": ["read"]
+        }
+      ]
+    }
+  }
+}

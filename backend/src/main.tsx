@@ -7,6 +7,10 @@ import Orders from './views/Orders';
 import Partners from './views/Partners';
 import Settings from './views/Settings';
 import Landing from './views/Landing';
+import "primereact/resources/themes/lara-dark-teal/theme.css";
+import 'primeicons/primeicons.css';
+import { GuardProvider } from './providers/GuardProvider';
+import SidebarLayout from './components/SidebarLayout';
 
 const router = createBrowserRouter([
   {
@@ -14,23 +18,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Landing />
+        element: <SidebarLayout component={<Landing />} />
       },
       {
         path: "products",
-        element: <Products />
+        element: <SidebarLayout component={<Products />} />
       },
       {
         path: "orders",
-        element: <Orders />
+        element: <SidebarLayout component={<Orders />} />
       },
       {
         path: "partners",
-        element: <Partners />
+        element: <SidebarLayout component={<Partners />} />
       },
       {
         path: "settings",
-        element: <Settings />
+        element: <SidebarLayout component={<Settings />} />
       }
     ]
   },
@@ -38,6 +42,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <GuardProvider>
+      <RouterProvider router={router} />
+    </GuardProvider>
   </React.StrictMode>,
 )

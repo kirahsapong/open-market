@@ -11,13 +11,16 @@
   },
   "dependencies": {
     "@tbd54566975/dwn-sdk-js": "^0.3.10",
+    "@web5/api": "^0.9.4",
     "@web5/dids": "^1.1.1",
+    "primeicons": "^7.0.0",
     "primereact": "^10.6.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.0"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.13.1",

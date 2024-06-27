@@ -1,6 +1,8 @@
+
 const Settings = () => {
+  
   return (
-    <></>
+    <>Settings</>
   )
 }
 
