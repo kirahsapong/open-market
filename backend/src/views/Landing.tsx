@@ -10,7 +10,7 @@ import { FormEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
-  const { setIsGuarded, web5, did } = useGuard();
+  const { setIsGuarded, web5, did, setStoreId } = useGuard();
   const [isMarketplace, setIsMarketplace] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,18 +20,18 @@ const Landing = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    const hasError = await onboardStore(e);
+    const hasError = await createStore(e);
     setIsLoading(false);
     if (hasError) {
       showError()
     } else {
       hideDialog()
       setIsGuarded(false);
-      navigate('/products');
+      navigate(isMarketplace ? '/partners' : '/products');
     }
   }
 
-  const onboardStore = async (e: FormEvent<HTMLFormElement>) => {
+  const createStore = async (e: FormEvent<HTMLFormElement>) => {
     let hasError = false;
     const formData = new FormData(e.target as HTMLFormElement);
     const entries = Object.fromEntries(formData.entries());
@@ -44,6 +44,7 @@ const Landing = () => {
       await protocol.send(did);
       const { record } = await web5.dwn.records.create({
         data: {
+          identifier: did,
           name: entries.name
         },
         message: {
@@ -54,6 +55,7 @@ const Landing = () => {
       })
       if (record) {
         await record.send(did)
+        setStoreId(record.id)
       } else {
         hasError = true;
       }
@@ -93,6 +95,7 @@ const Landing = () => {
               name="name"
               placeholder={isMarketplace ? "Marketplace name" : "Seller name"}
               aria-describedby="name-help"
+              autoComplete="off"
             />
             <small id="name-help">
               {isMarketplace 

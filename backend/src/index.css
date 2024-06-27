@@ -63,6 +63,21 @@ a {
   color: var(--light-green);
 }
 
+p {
+  line-height: 1.5;
+  color: var(--muted-green);
+}
+
+.p-progressbar {
+  height: 6px;
+  width: 740px;
+  margin: auto;
+
+  .p-progressbar-value {
+    background: var(--light-green);
+  }
+}
+
 #landing {
   height: 100%;
   display: flex;
@@ -87,10 +102,16 @@ form {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-block: 2rem;
+    margin-block: 0.5rem;
 
-    input {
-      max-width: 400px;
+    input,
+    .p-inputtext {
+      width: 400px;
+      max-width: 100%;
+
+      & + small {
+        margin-block-end: 1rem;
+      }
     }
   }
 
@@ -121,7 +142,8 @@ form {
   }
 }
 
-input {
+input,
+.p-inputtext {
   background: var(--medium-light-green);
   border-color: var(--medium-green);
 
@@ -130,7 +152,24 @@ input {
   }
 }
 
+.p-chips-token {
+  background: var(--darkest-green);
+}
+
+.error {
+  color: var(--red-400);
+}
+
 .p-button:not(.p-button-link) {
   background: var(--light-green);
   color: var(--dark-green);
+}
+
+.buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.p-divider.p-divider-horizontal:before {
+  border-color: var(--medium-light-green);
 }

@@ -1,12 +1,17 @@
 import { useState, useEffect, ReactNode, createContext } from 'react';
 import { Web5 } from "@web5/api";
+import { ProgressBar } from "primereact/progressbar";
+import StoreProtocol from "../web5/store.json"; 
+
 
 const guardContext = { 
   isGuarded: true, 
+  setIsGuarded: (() => {}) as (isGuarded: boolean) => void,
   loading: true, 
   did: '', 
   web5: {} as Web5,
-  setIsGuarded: (() => {}) as (isGuarded: boolean) => void,
+  storeId: '',
+  setStoreId: (() => {}) as (storeId: string) => void
 }
 
 export const GuardContext = createContext(guardContext);
@@ -16,6 +21,7 @@ export const GuardProvider = ({ children }: { children: ReactNode }) => {
   const [isGuarded, setIsGuarded] = useState(true);
   const [did, setDid] = useState('');
   const [web5, setWeb5] = useState({} as Web5);
+  const [storeId, setStoreId] = useState('');
 
   useEffect(() => {
     const checkGuard = async () => {
@@ -23,10 +29,23 @@ export const GuardProvider = ({ children }: { children: ReactNode }) => {
       const { protocols } = await web5.dwn.protocols.query({
         message: {
           filter: {
-            protocol: "https://github.com/kirahsapong/open-market/raw/main/backend/src/web5/store.json",
+            protocol: StoreProtocol.protocol,
           },
         },
       });
+      if (protocols.length) {
+        const { record } = await web5.dwn.records.read({
+          message: {
+            filter: {
+              protocol: StoreProtocol.protocol,
+              protocolPath: "store"
+            },
+          },
+        });
+        if (record) {
+          setStoreId(record.id)
+        }
+      }
       setIsGuarded(!protocols.length)
       setDid(did);
       setWeb5(web5);
@@ -37,11 +56,11 @@ export const GuardProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>
+    return <ProgressBar mode="indeterminate"></ProgressBar>
   }
 
   return (
-    <GuardContext.Provider value={{ setIsGuarded, isGuarded, loading, did, web5 }}>
+    <GuardContext.Provider value={{ isGuarded, setIsGuarded, loading, did, web5, storeId, setStoreId }}>
       { children }
     </GuardContext.Provider>
   );
