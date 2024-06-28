@@ -109,19 +109,23 @@ form {
     flex-direction: column;
     gap: 0.5rem;
     margin-block: 0.5rem;
+    width: 400px;
 
     input,
     .p-inputtext {
-      width: 400px;
-      max-width: 100%;
+      width: 100%;
 
       & + small {
         margin-block-end: 1rem;
       }
     }
 
-    & label {
+    label {
       font-weight: bold;
+    }
+
+    &.fields {
+      flex-direction: row;
     }
   }
 
@@ -159,7 +163,9 @@ form {
 input,
 .p-inputtext,
 .p-dropdown,
-.p-dropdown-items {
+.p-dropdown-items,
+.p-autocomplete-panel,
+.p-inputgroup-addon {
   background: var(--medium-light-green);
   border-color: var(--medium-green);
   color: var(--light-green);
@@ -174,7 +180,8 @@ input,
 .p-paginator .p-paginator-first, 
 .p-paginator .p-paginator-prev, 
 .p-paginator .p-paginator-next, 
-.p-paginator .p-paginator-last {
+.p-paginator .p-paginator-last,
+.p-autocomplete-item {
   color: var(--light-green);
 
   &:hover {
@@ -235,4 +242,18 @@ button {
   .p-datatable-wrapper {
     margin-block-end: 100px;
   }
+}
+
+.p-sidebar {
+  background: var(--dark-green);
+  border-color: var(--medium-green);
+  color: var(--light-green);
+}
+
+.p-checkbox-box {
+  background: var(--light-green);
+}
+
+.p-inputgroup {
+  width: fit-content;
 }

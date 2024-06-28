@@ -31,7 +31,6 @@ export interface Offer {
       contentUrl: string; // URI of the image blob
       caption: string; // Alt text for the image
     },
-    keywords: string // Delimited by commas, keywords for the Product
   }
 }
 
@@ -51,6 +50,14 @@ export interface AggregateOffer {
 
 /* Uses partial properties from https://schema.org/Order */
 export interface Order {
+  acceptedOffer: { 
+    priceSpecification: {
+      price: number;
+      priceCurrency: string;
+    },
+    price: number; // The total price after including fees
+    priceCurrency: string; // The currency of the total price after including fees
+  }
   /* Uses partial properties from https://schema.org/OrderStatus */
   orderStatus: "OrderProcessing" | "OrderDelivered"
   /* Uses partial properties from https://schema.org/OrderItem */
@@ -68,8 +75,8 @@ export interface Order {
   customer: {
     identifier: string; // DID of the Customer or Agent
   };
-  seller: Partner; // Seller of the Offer associated with the Order
-  broker: Partner; // Partner the Order was made through, if applicable
+  seller: Pick<Partner, 'identifier'>; // Seller of the Offer associated with the Order
+  broker: Pick<Partner, 'identifier'>; // Partner the Order was made through, if applicable
 }
 
 /* Uses partial properties from https://schema.org/Organization */

@@ -40,6 +40,12 @@ const Partners = () => {
         for (const record of records) {
           const data = await record.data.json();
           const provider = await getSellerDetails(data.identifier);
+          await record.update({
+            data: {
+              ...data,
+              ...provider
+            }
+          })
           resolvedData.push({ ...record, ...provider });
         }
         setPartners(resolvedData)
@@ -49,7 +55,6 @@ const Partners = () => {
     checkPartners();
     setIsFetching(false);
   }, [isLoading])
-
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -149,13 +154,14 @@ const Partners = () => {
       <div className="header">
         <h1>Manage partners</h1>
         <p>Manage sellers on your marketplace by seller address (or Decentralized ID)</p>
-        <Button label="Add partner" onClick={showDialog}/>
+        <div className="buttons">
+          <Button label="Add partner" onClick={showDialog}/>
+        </div>
       </div>
       <DataTable 
         value={partners} 
         paginator rows={5} 
         rowsPerPageOptions={[5, 10, 25, 50]} 
-        tableStyle={{ minWidth: '50rem' }}
         loading={isFetching}
         emptyMessage={"No partners to display"}
       >
