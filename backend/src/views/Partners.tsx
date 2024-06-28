@@ -2,19 +2,54 @@ import { Button } from "primereact/button"
 import { Dialog } from "primereact/dialog"
 import { Chips } from 'primereact/chips';
 import { Toast } from "primereact/toast";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { Divider } from 'primereact/divider';
 import { useGuard } from "../hooks/useGuard";
 import StoreProtocol from "../web5/store.json"; 
+import { type Record } from "@web5/api";
 import { UniversalResolver, DidDht } from "@web5/dids";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { Partner } from "../web5/types";
+import { web5 } from "../web5/web5.service";
 
 
 const Partners = () => {
-  const { web5, storeId } = useGuard();
+  const { storeId } = useGuard();
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [partners, setPartners] = useState<Partial<Partner & Record>[]>([]);
   const [dids, setDids] = useState<string[]>([]);
   const toast = useRef<Toast>(null);
+
+
+
+  useEffect(() => {
+    setIsFetching(true)
+    const checkPartners = async () => {
+      const { records } = await web5.dwn.records.query({
+        message: {
+          filter: {
+            protocol: StoreProtocol.protocol,
+            protocolPath: "store/partner",
+            schema: StoreProtocol.types.partner.schema
+          }
+        },
+      })
+      if (records && records.length) {
+        const resolvedData: Partial<Partner & Record> [] = []
+        for (const record of records) {
+          const data = await record.data.json();
+          resolvedData.push({ ...data, ...record });
+        }
+        setPartners(resolvedData)
+      }
+    }
+
+    checkPartners();
+    setIsFetching(false);
+  }, [])
 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -38,7 +73,6 @@ const Partners = () => {
     
     for (const did of dids) {
       const resolved = await resolver.resolve(did);
-      console.log(web5.did)
       if (resolved.didResolutionMetadata.error) {
         someError.push(resolved.didResolutionMetadata.errorMessage);
         continue;
@@ -87,9 +121,25 @@ const Partners = () => {
   return (
     <div id="partners">
       <Toast ref={toast} />
-      <h1>Manage partners</h1>
-      <p>Manage sellers on your marketplace by seller address (or Decentralized ID)</p>
-      <Button label="Add partner" onClick={showDialog}/>
+      <header>
+        <h1>Manage partners</h1>
+        <p>Manage sellers on your marketplace by seller address (or Decentralized ID)</p>
+        <Button label="Add partner" onClick={showDialog}/>
+      </header>
+      <DataTable 
+        value={partners} 
+        paginator rows={5} 
+        rowsPerPageOptions={[5, 10, 25, 50]} 
+        tableStyle={{ minWidth: '50rem' }}
+        loading={isFetching}
+      >
+        <Column field="_descriptor.dateCreated" header="Added"></Column>
+        <Column field="identifier" header="Company"></Column>
+        <Column field="name" header="Name"></Column>
+        <Column field="contactPoint.email" header="Email"></Column>
+        <Column field="contactPoint.telephone" header="Telephone"></Column>
+
+      </DataTable>
       <Dialog header={"Add partners"} visible={isVisible} style={{ width: '640px' }} onHide={hideDialog}>
         <p>Add sellers to your marketplace by seller address (or Decentralized ID).</p>
         <form onSubmit={handleSubmit}>
@@ -121,7 +171,6 @@ const Partners = () => {
           <Button label="Copy my address" icon="pi pi-send" />
         </div>
       </Dialog>
-    
     </div>
   )
 }

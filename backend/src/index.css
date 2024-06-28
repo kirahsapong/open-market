@@ -4,6 +4,7 @@
   --medium-green: #092323;
   --medium-light-green: #113E3E;
   --light-green: #96EDED;
+  --lightest-green: #B9EFEF;
   --muted-green: #537E7E;
   --text-color: var(--light-green);
   --text-color-secondary: var(--medium-light-green);
@@ -57,6 +58,10 @@ main {
   padding: 1rem;
   overflow: scroll;
   flex: 1;
+}
+
+header {
+  padding: 1rem;
 }
 
 a {
@@ -143,17 +148,38 @@ form {
 }
 
 input,
-.p-inputtext {
+.p-inputtext,
+.p-dropdown,
+.p-dropdown-items {
   background: var(--medium-light-green);
   border-color: var(--medium-green);
+  color: var(--light-green);
 
   &::placeholder {
     color: var(--muted-green);
   }
 }
 
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item,
+.p-paginator .p-paginator-pages .p-paginator-page,
+.p-paginator .p-paginator-first, 
+.p-paginator .p-paginator-prev, 
+.p-paginator .p-paginator-next, 
+.p-paginator .p-paginator-last {
+  color: var(--light-green);
+
+  &:hover {
+    color: var(--lightest-green);
+  }
+}
+
+.p-dropdown .p-dropdown-trigger {
+  color: var(--muted-green);
+}
+
 .p-chips-token {
   background: var(--darkest-green);
+  color: var(--light-green);
 }
 
 .error {
@@ -172,4 +198,18 @@ input,
 
 .p-divider.p-divider-horizontal:before {
   border-color: var(--medium-light-green);
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: var(--maskbg);
+  border-color: var(--maskbg);
+}
+
+.p-paginator,
+.p-datatable .p-datatable-tbody > tr,
+.p-datatable .p-datatable-thead > tr > th,
+.p-datatable .p-datatable-tbody > tr > td {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--light-green);
 }

@@ -8,9 +8,10 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { FormEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { did, web5 } from "../web5/web5.service";
 
 const Landing = () => {
-  const { setIsGuarded, web5, did, setStoreId } = useGuard();
+  const { setIsGuarded, setStoreId } = useGuard();
   const [isMarketplace, setIsMarketplace] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
