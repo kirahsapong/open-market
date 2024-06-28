@@ -76,12 +76,7 @@ export interface Order {
 export interface Partner {
   identifier: string; // DID of the Partner
   name: string; // Name of the Partner
-  /* Uses partial properties from https://schema.org/ContactPoint */
-  contactPoint?: {
-    email?: string; // Contact by email of the Partner
-    telephone?: string;  // Contact by phone of the Partner
-  };
-  keywords?: string; // Delimited by commas, keywords for the Partner
+  email?: string; // Contact by email of the Partner
 }
 
 // broker first enters a DID of a seller and adds as Partner

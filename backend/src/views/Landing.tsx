@@ -45,8 +45,10 @@ const Landing = () => {
       await protocol.send(did);
       const { record } = await web5.dwn.records.create({
         data: {
-          identifier: did,
-          name: entries.name
+          provider: {
+            identifier: did,
+            name: entries.name
+          }
         },
         message: {
           protocol: StoreProtocol.protocol,

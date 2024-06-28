@@ -11,7 +11,7 @@ import { UniversalResolver, DidDht } from "@web5/dids";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Partner } from "../web5/types";
-import { web5 } from "../web5/web5.service";
+import { did, web5 } from "../web5/web5.service";
 
 
 const Partners = () => {
@@ -22,8 +22,6 @@ const Partners = () => {
   const [partners, setPartners] = useState<Partial<Partner & Record>[]>([]);
   const [dids, setDids] = useState<string[]>([]);
   const toast = useRef<Toast>(null);
-
-
 
   useEffect(() => {
     setIsFetching(true)
@@ -41,15 +39,16 @@ const Partners = () => {
         const resolvedData: Partial<Partner & Record> [] = []
         for (const record of records) {
           const data = await record.data.json();
-          resolvedData.push({ ...data, ...record });
+          const provider = await getSellerDetails(data.identifier);
+          resolvedData.push({ ...record, ...provider });
         }
         setPartners(resolvedData)
+        
       }
     }
-
     checkPartners();
     setIsFetching(false);
-  }, [])
+  }, [isLoading])
 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -66,30 +65,56 @@ const Partners = () => {
     }
   }
 
+  const createSellerDetails = async (sellerDid: string, provider: Partner | undefined) => {
+    const { record } = await web5.dwn.records.create({
+      data: {
+        identifier: sellerDid,
+        name: provider?.name,
+        email: provider?.email,
+      },
+      message: {
+        protocol: StoreProtocol.protocol,
+        protocolPath: "store/partner",
+        parentContextId: storeId,
+        schema: StoreProtocol.types.partner.schema
+      },
+    })
+    return record;
+  }
+
+  const getSellerDetails = async (sellerDid: string) => {
+    let provider: Partner | undefined = undefined;
+    const { records } = await web5.dwn.records.query({
+      from: sellerDid,
+      message: {
+        filter: {
+          protocol: StoreProtocol.protocol,
+          protocolPath: "store",
+          schema: StoreProtocol.types.store.schema
+        }
+      }
+    })
+    if (records && records[0]) {
+      ({ provider } = await records[0].data.json());
+    }
+    return provider
+  }
+
   const addSeller = async () => {
     let someError = [];
     let someSuccess = 0;
-    const resolver = new UniversalResolver({ didResolvers: [ DidDht ]});
-    
-    for (const did of dids) {
-      const resolved = await resolver.resolve(did);
+    const resolver = new UniversalResolver({ didResolvers: [ DidDht ]});    
+    for (const sellerDid of dids) {
+      const resolved = await resolver.resolve(sellerDid);
       if (resolved.didResolutionMetadata.error) {
         someError.push(resolved.didResolutionMetadata.errorMessage);
         continue;
       }
-      const { record } = await web5.dwn.records.create({
-        data: {
-          identifier: did
-        },
-        message: {
-          protocol: StoreProtocol.protocol,
-          protocolPath: "store/partner",
-          parentContextId: storeId,
-          schema: StoreProtocol.types.partner.schema
-        },
-      })
+      // If they have a store, we can get their details and save it
+      const provider = await getSellerDetails(sellerDid);
+      const record = await createSellerDetails(sellerDid, provider);
       if (record) {
-        await record.send(did)
+        await record.send(sellerDid)
         someSuccess++
       } else {
         someError.push("Error adding seller")
@@ -121,32 +146,32 @@ const Partners = () => {
   return (
     <div id="partners">
       <Toast ref={toast} />
-      <header>
+      <div className="header">
         <h1>Manage partners</h1>
         <p>Manage sellers on your marketplace by seller address (or Decentralized ID)</p>
         <Button label="Add partner" onClick={showDialog}/>
-      </header>
+      </div>
       <DataTable 
         value={partners} 
         paginator rows={5} 
         rowsPerPageOptions={[5, 10, 25, 50]} 
         tableStyle={{ minWidth: '50rem' }}
         loading={isFetching}
+        emptyMessage={"No partners to display"}
       >
         <Column field="_descriptor.dateCreated" header="Added"></Column>
-        <Column field="identifier" header="Company"></Column>
+        <Column field="identifier" header="Seller Address"></Column>
         <Column field="name" header="Name"></Column>
-        <Column field="contactPoint.email" header="Email"></Column>
-        <Column field="contactPoint.telephone" header="Telephone"></Column>
+        <Column field="email" header="Email"></Column>
 
       </DataTable>
       <Dialog header={"Add partners"} visible={isVisible} style={{ width: '640px' }} onHide={hideDialog}>
         <p>Add sellers to your marketplace by seller address (or Decentralized ID).</p>
         <form onSubmit={handleSubmit}>
           <div className="field">
-            <label htmlFor="identifer-1">Seller addresses</label>
+            <label htmlFor="identifier">Seller addresses</label>
             <Chips 
-              inputId="identifier-1"
+              inputId="identifier"
               value={dids}
               onChange={(e) => {if (dids?.length >= 6) return; setDids(e.value || [])}}
               placeholder={dids?.length ? "" : "did:xxx:xxx-xxx, did:xxx:xxx-xxx"}
@@ -167,8 +192,8 @@ const Partners = () => {
         <Divider />
         <h2>Invite partners</h2>
         <div className="buttons">
-          <Button label="Copy invite link" icon="pi pi-link" />
-          <Button label="Copy my address" icon="pi pi-send" />
+          <Button label="Copy invite link" icon="pi pi-link" onClick={() => navigator.clipboard.writeText(location.origin)} />
+          <Button label="Copy my address" icon="pi pi-send" onClick={() => navigator.clipboard.writeText(did)}/>
         </div>
       </Dialog>
     </div>

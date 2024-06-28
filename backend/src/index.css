@@ -60,10 +60,6 @@ main {
   flex: 1;
 }
 
-header {
-  padding: 1rem;
-}
-
 a {
   color: var(--light-green);
 }
@@ -71,6 +67,11 @@ a {
 p {
   line-height: 1.5;
   color: var(--muted-green);
+}
+
+.header,
+.form-area {
+  padding: 1rem;
 }
 
 .p-progressbar {
@@ -118,6 +119,14 @@ form {
         margin-block-end: 1rem;
       }
     }
+
+    & label {
+      font-weight: bold;
+    }
+  }
+
+  button {
+    margin-block-start: 1rem;
   }
 
   .buttons {
@@ -196,6 +205,10 @@ input,
   gap: 0.5rem;
 }
 
+button {
+  width: fit-content;
+}
+
 .p-divider.p-divider-horizontal:before {
   border-color: var(--medium-light-green);
 }
@@ -212,4 +225,14 @@ input,
   background-color: transparent;
   border-color: transparent;
   color: var(--light-green);
+}
+
+.p-datatable:has(.p-datatable-loading-overlay.p-component-overlay) {
+  .p-datatable-loading-overlay.p-component-overlay {
+    background: transparent;
+  }
+
+  .p-datatable-wrapper {
+    margin-block-end: 100px;
+  }
 }
