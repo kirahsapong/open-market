@@ -66,9 +66,12 @@ h1 {
     place-items: center;
     height: 180px;
 
-    img {
+    img:not(.cart-item-image > img) {
       max-width: 50%;
       margin: auto;
+      height: 100%;
+      object-fit: contain;
+      padding: 1rem;
     }
   }
 
@@ -82,6 +85,13 @@ h1 {
 
 section {
   margin-block: 4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  .p-card {
+    flex-basis: calc(25% - 1rem);
+  }
 }
 
 .cart-item {
