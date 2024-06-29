@@ -166,7 +166,8 @@ const Products = () => {
           protocol: StoreProtocol.protocol,
           protocolPath: "store/aggregateOffer",
           parentContextId: storeId,
-          schema: StoreProtocol.types.aggregateOffer.schema
+          schema: StoreProtocol.types.aggregateOffer.schema,
+          published: true
         },
       })
       if (record) {
@@ -219,7 +220,8 @@ const Products = () => {
       message: {
         protocol: StoreProtocol.protocol,
         protocolPath: "offer",
-        schema: StoreProtocol.types.offer.schema
+        schema: StoreProtocol.types.offer.schema,
+        published: true
       },
     })
     if (record) {
@@ -231,7 +233,8 @@ const Products = () => {
           message: {
             protocol: StoreProtocol.protocol,
             protocolPath: "offer/image",
-            parentContextId: record?.contextId
+            parentContextId: record?.contextId,
+            published: true
           },
         });
         await imageRecord?.send();

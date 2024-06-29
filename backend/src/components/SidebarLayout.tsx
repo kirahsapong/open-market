@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { NavLink, Navigate, useLocation } from "react-router-dom";
 import { useGuard } from "../hooks/useGuard";
 import Logo from '../assets/logo.svg';
+import { did } from "../web5/web5.service";
 
 const SidebarLayout = ({ component }: { component: ReactNode }) => {
   const { isGuarded } = useGuard();
@@ -23,12 +24,15 @@ const SidebarLayout = ({ component }: { component: ReactNode }) => {
         </div>
         { !isGuarded 
         && (
-          <nav>
-            <NavLink to="/products"><i className="pi pi-box"></i> Products</NavLink>
-            <NavLink to="/orders"><i className="pi pi-receipt"></i> Orders</NavLink>
-            <NavLink to="/partners"><i className="pi pi-users"></i> Partners</NavLink>
-            <NavLink to="/settings"><i className="pi pi-cog"></i> Settings</NavLink>
-          </nav>
+          <div className="sidebar">
+            <nav>
+              <NavLink to="/products"><i className="pi pi-box"></i> Products</NavLink>
+              <NavLink to="/orders"><i className="pi pi-receipt"></i> Orders</NavLink>
+              <NavLink to="/partners"><i className="pi pi-users"></i> Partners</NavLink>
+              <NavLink to="/settings"><i className="pi pi-cog"></i> Settings</NavLink>
+            </nav>
+            <a href={`http://localhost:5174/${did}`} className="p-button" target="blank">Go to store</a>
+          </div>
         )}
       </aside>
       <main>

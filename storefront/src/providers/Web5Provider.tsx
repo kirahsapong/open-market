@@ -22,7 +22,7 @@ export const Web5Provider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [storeDetails, setStoreDetails] = useState();
   const [storeId, setStoreId] = useState('');
-  const storeDid = location.pathname.slice(1) ?? 'did:dht:tz4x5odfio3bjsmyai911tk8qskp5mmm1uqndpbax4r18hwp7z1o'
+  const storeDid = location.pathname.slice(1) ?? 'did:dht:tz4x5odfio3bjsmyai911tk8qskp5mmm1uqndpbax4r18hwp7z1o' // random fallback did
 
   useEffect(() => {
     setIsLoading(true);
@@ -42,7 +42,7 @@ export const Web5Provider = ({ children }: { children: ReactNode }) => {
     }
     getStoreDetails();
     setIsLoading(false);
-  }, []);
+  }, [storeDid]);
 
   if (isLoading) {
     return (

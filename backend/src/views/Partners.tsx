@@ -46,7 +46,16 @@ const Partners = () => {
               ...provider
             }
           })
-          resolvedData.push({ ...record, ...provider });
+          const dateOptions: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+          };
+          resolvedData.push({ ...record, ...provider, dateCreated: new Date(record.dateCreated).toLocaleString('en-US', dateOptions).replace(',', '') });
         }
         setPartners(resolvedData)
         
@@ -81,7 +90,8 @@ const Partners = () => {
         protocol: StoreProtocol.protocol,
         protocolPath: "store/partner",
         parentContextId: storeId,
-        schema: StoreProtocol.types.partner.schema
+        schema: StoreProtocol.types.partner.schema,
+        published: true
       },
     })
     return record;
@@ -165,7 +175,7 @@ const Partners = () => {
         loading={isFetching}
         emptyMessage={"No partners to display"}
       >
-        <Column field="_descriptor.dateCreated" header="Added"></Column>
+        <Column field="dateCreated" header="Added" style={{ whiteSpace: 'nowrap' }}></Column>
         <Column field="identifier" header="Seller Address"></Column>
         <Column field="name" header="Name"></Column>
         <Column field="email" header="Email"></Column>

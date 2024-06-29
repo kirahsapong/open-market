@@ -29,28 +29,42 @@ aside {
   width: 300px;
   padding: 1rem;
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    
+    nav {
+      display: flex;
+      flex-direction: column;
+      margin-block: 2rem;
+  
+      a {
+        text-decoration: none;
+        padding: 0.75rem;
+        border-radius: var(--border-radius);
+        display: flex;
+        gap: 1rem;
+  
+        &:hover,
+        &.active {
+          background: var(--dark-green);
+        }
+      }
+    }
+
+    a.p-button {
+      text-decoration: none;
+      font-weight: bold;
+    }
+  }
 
   img {
     margin: 0.75rem;
-  }
-
-  nav {
-    display: flex;
-    flex-direction: column;
-    margin-block: 2rem;
-
-    a {
-      text-decoration: none;
-      padding: 0.75rem;
-      border-radius: var(--border-radius);
-      display: flex;
-      gap: 1rem;
-
-      &:hover,
-      &.active {
-        background: var(--dark-green);
-      }
-    }
   }
 }
 

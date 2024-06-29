@@ -11,6 +11,7 @@ import "primereact/resources/themes/lara-dark-teal/theme.css";
 import 'primeicons/primeicons.css';
 import { GuardProvider } from './providers/GuardProvider';
 import SidebarLayout from './components/SidebarLayout';
+import { PrimeReactProvider } from 'primereact/api';
 
 const router = createBrowserRouter([
   {
@@ -42,8 +43,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <GuardProvider>
-      <RouterProvider router={router} />
-    </GuardProvider>
+    <PrimeReactProvider>
+      <GuardProvider>
+        <RouterProvider router={router} />
+      </GuardProvider>
+    </PrimeReactProvider>
   </React.StrictMode>,
 )

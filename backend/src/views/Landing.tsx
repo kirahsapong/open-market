@@ -28,7 +28,7 @@ const Landing = () => {
     } else {
       hideDialog()
       setIsGuarded(false);
-      navigate(isMarketplace ? '/partners' : '/products');
+      navigate(isMarketplace ? '/settings' : '/products');
     }
   }
 
@@ -53,7 +53,8 @@ const Landing = () => {
         message: {
           protocol: StoreProtocol.protocol,
           protocolPath: "store",
-          schema: StoreProtocol.types.store.schema
+          schema: StoreProtocol.types.store.schema,
+          published: true
         },
       })
       if (record) {

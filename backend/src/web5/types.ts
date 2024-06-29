@@ -51,9 +51,9 @@ export interface AggregateOffer {
 /* Uses partial properties from https://schema.org/Order */
 export interface Order {
   acceptedOffer: { 
-    priceSpecification: {
+    priceSpecification?: {
       price: number;
-      priceCurrency: string;
+      priceCurrency?: string;
     },
     price: number; // The total price after including fees
     priceCurrency: string; // The currency of the total price after including fees
@@ -61,13 +61,13 @@ export interface Order {
   /* Uses partial properties from https://schema.org/OrderStatus */
   orderStatus: "OrderProcessing" | "OrderDelivered"
   /* Uses partial properties from https://schema.org/OrderItem */
-  orderedItem: {
-    orderItemNumber: string; // Fully qualified RecordID of the broker's AggregateOffer
-    orderQuantity: number; // Number of the Offer ordered
+  orderedItem?: {
+    orderItemNumber?: string; // Fully qualified RecordID of the broker's AggregateOffer
+    orderQuantity?: number; // Number of the Offer ordered
     /* Uses partial properties from https://schema.org/OrderStatus */
-    orderItemStatus: "OrderProcessing" | "OrderDelivered"
+    orderItemStatus?: "OrderProcessing" | "OrderDelivered"
     /* Uses partial properties from https://schema.org/OrderItem */
-    orderedItem: {
+    orderedItem?: {
       orderItemNumber: string; // Fully qualified RecordID of the seller's Offer
     }
   }[];

@@ -3,7 +3,6 @@ import { ProgressBar } from "primereact/progressbar";
 import StoreProtocol from "../web5/store.json"; 
 import { checkHasProtocol } from '../web5/web5.service';
 
-
 const guardContext = { 
   loading: true, 
   isGuarded: true, 
