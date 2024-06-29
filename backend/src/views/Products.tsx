@@ -317,7 +317,7 @@ const Products = () => {
         </div>
       </div>
       <div className="header">
-        <h2>Aggregated products</h2>
+        <h2>Collected products</h2>
         <p>These products appear in your marketplace</p>
       </div>
       <DataTable 
