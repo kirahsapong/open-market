@@ -337,7 +337,7 @@ const Products = () => {
       </DataTable>
       <div className="header">
         <h2>My products</h2>
-        <p>These products are available to marketplaces</p>
+        <p>These products are available to other marketplaces</p>
       </div>
       <DataTable 
         value={myOffers} 
