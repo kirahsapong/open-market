@@ -71,7 +71,7 @@ const Orders = () => {
         <Column field="acceptedOffer.priceCurrency" header="Currency"></Column>
         <Column field="orderStatus" header="Status"></Column>
         <Column field="customer.identifier" header="Customer#"></Column>
-        <Column field="seller.identifier" header="Seller#"></Column>
+        <Column field="seller.identifier" header="Seller(s)"></Column>
         <Column field="broker.identifier" header="Broker#"></Column>
       </DataTable>
       

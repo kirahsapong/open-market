@@ -30,6 +30,7 @@ const Products = () => {
   const [currencies, setCurrencies] = useState(['USD', 'BTC', 'AUS', 'CAD'])
   const [selectedCurrency, setSelectedCurrency] = useState('')
   const [selectedFiles, setSelectedFiles] = useState<File[]>()
+  const [myOffers, setMyOffers] = useState<Offer[]>([]);
 
   useEffect(() => {
     setIsFetching(true)
@@ -59,8 +60,9 @@ const Products = () => {
           resolvedData.push(resolvedProduct);
         }
         setProducts(resolvedData) 
-        console.log(resolvedData)
       }
+      const myResolvedOffers = await getProviderOffers();
+      setMyOffers(myResolvedOffers);
     }
 
     checkProducts()
@@ -116,10 +118,13 @@ const Products = () => {
     return partners
   }
 
-  const getProviderOffers = async (sellerDid: string) => {
+  /* 
+  * Pass a `sellerDid` to fetch from a remote DWN 
+  */
+  const getProviderOffers = async (sellerDid?: string) => {
     const offers: Offer[] = [];
     const { records } = await web5.dwn.records.query({
-      from: sellerDid,
+      ...sellerDid && { from: sellerDid },
       message: {
         filter: {
           protocol: StoreProtocol.protocol,
@@ -311,6 +316,10 @@ const Products = () => {
           <Button link label="Find products" onClick={showSidebar} loading={isFinding}/>
         </div>
       </div>
+      <div className="header">
+        <h2>Aggregated products</h2>
+        <p>These products appear in your marketplace</p>
+      </div>
       <DataTable 
         value={products} 
         paginator rows={5} 
@@ -324,6 +333,23 @@ const Products = () => {
         <Column field="aggregatePrice.price" header="Your Price"></Column>
         <Column field="priceSpecification.priceCurrency" header="Currency"></Column>
         <Column field="provider.name" header="Seller"></Column>
+        <Column field="inventoryLevel" header="Inventory"></Column>
+      </DataTable>
+      <div className="header">
+        <h2>My products</h2>
+        <p>These products are available to marketplaces</p>
+      </div>
+      <DataTable 
+        value={myOffers} 
+        paginator rows={5} 
+        rowsPerPageOptions={[5, 10, 25, 50]} 
+        loading={isFetching}
+        emptyMessage={"No products to display"}
+      >
+        <Column field="itemOffered.name" header="Name"></Column>
+        <Column field="itemOffered.description" header="Description"></Column>
+        <Column field="priceSpecification.price" header="Base Price"></Column>
+        <Column field="priceSpecification.priceCurrency" header="Currency"></Column>
         <Column field="inventoryLevel" header="Inventory"></Column>
       </DataTable>
       <Sidebar 
