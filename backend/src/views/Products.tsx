@@ -153,11 +153,10 @@ const Products = () => {
         continue;
       }
       // Otherwise, add the offer
-
       const { record } = await web5.dwn.records.create({
         data: {
           priceSpecification: {
-            price: offer.priceSpecification?.price ? (offer.priceSpecification?.price * 1.1).toFixed(2) : undefined,
+            price: offer.priceSpecification?.price ? (Number(offer.priceSpecification?.price.toString().replace(',', '')) * 1.1).toFixed(2) : undefined,
             priceCurrency: offer.priceSpecification?.priceCurrency
           },
           offers: [{
