@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@tbd54566975/dwn-sdk-js": "^0.3.10",
+    "@web5/api": "^0.9.4",
     "@web5/dids": "^1.1.1",
     "primereact": "^10.6.6",
     "react": "^18.3.1",
