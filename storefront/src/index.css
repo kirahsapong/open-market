@@ -113,4 +113,8 @@ section {
 .cart-button {
   display: flex;
   justify-content: end;
+
+  button {
+    color: var(--white);
+  }
 }

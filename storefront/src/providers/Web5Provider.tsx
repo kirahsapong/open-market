@@ -6,13 +6,13 @@ import { Store } from "../web5/types";
 
 interface IWeb5Context { 
   storeDetails: Store | undefined
-  sellerDid: string,
+  storeDid: string,
   storeId: string
 }
 
 const web5Context: IWeb5Context = { 
   storeDetails: undefined,
-  sellerDid: '',
+  storeDid: '',
   storeId: ''
 }
 
@@ -22,14 +22,14 @@ export const Web5Provider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [storeDetails, setStoreDetails] = useState();
   const [storeId, setStoreId] = useState('');
-  const sellerDid = 'did:dht:tz4x5odfio3bjsmyai911tk8qskp5mmm1uqndpbax4r18hwp7z1o'
+  const storeDid = location.pathname.slice(1) ?? 'did:dht:tz4x5odfio3bjsmyai911tk8qskp5mmm1uqndpbax4r18hwp7z1o'
 
   useEffect(() => {
     setIsLoading(true);
     const getStoreDetails = async() => {
       const { web5 } = await initWeb5();
       const { records } = await web5.dwn.records.query({
-        from: sellerDid,
+        from: storeDid,
         message: {
           filter: {
             protocol: StoreProtocol.protocol,
@@ -53,7 +53,7 @@ export const Web5Provider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <Web5Context.Provider value={{ storeDetails, sellerDid, storeId }}>
+    <Web5Context.Provider value={{ storeDetails, storeDid, storeId }}>
       { children }
     </Web5Context.Provider>
   );
