@@ -37,8 +37,10 @@ export const Web5Provider = ({ children }: { children: ReactNode }) => {
           }
         }
       })
-      setStoreDetails(await records?.[0].data.json());
+      const storeDetails = await records?.[0].data.json();
+      setStoreDetails(storeDetails);
       setStoreId(records?.[0].id ?? '');
+      document.title = storeDetails.provider.name;
     }
     getStoreDetails();
     setIsLoading(false);

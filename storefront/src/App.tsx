@@ -163,8 +163,10 @@ function App() {
         <div><Button link label={`cart${cart.length > 0 ? ` (${cart.length})` : ''}`} onClick={showSidebar}/></div>
       </header>
       <main>
-        <h1>{storeDetails?.headline ?? "Welcome"}</h1>
-        <p className="subheading">{storeDetails?.description ?? "This is just a template for now"}</p>
+        <div className="hero">
+          <h1>{storeDetails?.headline ?? "Welcome"}</h1>
+          <p className="subheading">{storeDetails?.description ?? "This is just a template for now"}</p>
+        </div>
         <section>
           {products.map(product => {
             return (

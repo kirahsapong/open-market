@@ -118,3 +118,7 @@ section {
     color: var(--white);
   }
 }
+
+.hero {
+  max-width: 1080px;
+}
